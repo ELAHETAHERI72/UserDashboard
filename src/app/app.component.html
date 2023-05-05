@@ -1,0 +1,82 @@
+<mat-drawer-container class="" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" style="width: 350px; padding: 12px;">
+        <h2>Gender</h2>
+
+        <div>
+            <p>
+                <mat-checkbox value="male" (change)="genderFiltering($event)">male</mat-checkbox>
+            </p>
+            <p>
+                <mat-checkbox value="female" (change)="genderFiltering($event)"> female
+                </mat-checkbox>
+            </p>
+            <p>
+                <mat-checkbox value="others" (change)="genderFiltering($event)">others</mat-checkbox>
+            </p>
+        </div>
+
+        <h2>Age</h2>
+
+        <div class="d-flex my-2 justify-content-between">
+
+            <div class="" style="flex-basis: 50%;">
+                <mat-select class="form-control" [(value)]="selectRange"
+                    (change)="ageFilter(ageValue.value,selectRange)">
+                    <mat-option [value]="ageRange" *ngFor="let ageRange of ageRanges">
+                        {{ageRange}}
+                    </mat-option>
+                </mat-select>
+            </div>
+
+            <div style="flex-basis: 40%;">
+                <input type="text" class="form-control" (input)="ageFilter(ageValue.value,selectRange)" #ageValue>
+
+            </div>
+        </div>
+
+
+        <h2>eyeClors</h2>
+
+        <div class="my-2" *ngFor="let eyecolor of eyecolorList">
+            <mat-checkbox [value]="eyecolor" (change)="eyeCOlorFiltering($event)">{{eyecolor}}</mat-checkbox>
+        </div>
+
+        <h2>birthDate</h2>
+
+
+        <div class="form-control d-flex align-items-center my-2">
+            <!-- <mat-label>From-To</mat-label> -->
+            <mat-date-range-input [formGroup]="campaignTwo" [rangePicker]="campaignTwoPicker"
+                [comparisonStart]="campaignOne.value.start" [comparisonEnd]="campaignOne.value.end">
+                <input matStartDate placeholder="Start date" formControlName="start" #dateRangeStart>
+                <input matEndDate placeholder="End date" formControlName="end" #dateRangeEnd
+                    (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd)">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="campaignTwoPicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #campaignTwoPicker></mat-date-range-picker>
+        </div>
+
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+        <button type="button" mat-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+
+
+    <ng-container *ngIf="data$ | async as data">
+        <!-- <div>{{data.name}}</div> -->
+        <ng-container *ngIf="data">
+            <div class="search-box container">
+                <button style="background: none; border: none; padding: 0">
+                </button>
+                <input style="vertical-align: 4px; width: 255px;" class="form-control" placeholder="search ..."
+                    [formControl]="searchUser" type="search" name="focus" id="search-input" value="">
+            </div>
+        </ng-container>
+
+        <app-data-table [data]="data"></app-data-table>
+    </ng-container>
+
+</mat-drawer-container>
